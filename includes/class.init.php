@@ -30,22 +30,56 @@ class BP_User_Review_Init{
 
     	$defaults = array(
     		'reviewee_id'=>get_current_user_id(),
-    		'reviewer_id'=>get_current_user_id()
+    		'reviewer_id'=>get_current_user_id(),
+            'commentid'=>0,
     	);
 
     	$args = wp_parse_args($atts,$defaults);
     	extract($args);
-    	return $this->user_review_form($reviewee_id,$reviewer_id);
+        //print_r($args);
+    	return $this->user_review_form($reviewee_id,$reviewer_id,$commentid);
     }
 
-    function user_review_form($reviewed_id,$user_id){
 
-    	if(!empty($_POST['bp_ur_submit_review'])){
+    function user_review_form($reviewed_id,$user_id,$commentID=0){
+
+        $content = array(
+            'bp_ur_review_title'=>'',
+            'comment_content'=>'',
+            'bp_ur_stars'=>0
+        );
+
+        if(isset($_GET['edit_comment'])){
+          //  print_r('##########1');
+
+            $args = array('comment__in'=>[$commentID]); 
+            //print_r($args);
+            $comment_query = new WP_Comment_Query;
+            $comments = $comment_query->query($args);
+            //echo'<pre>'; 
+            // print_r($comments);
+              
+            // $comment_content = "Test Comment  Content";
+
+           // print_r($comments);
+            $new_comment_arr = array(
+                "comment_ID" => $comments[0]->comment_ID,
+                "comment_content" => $_POST['bp_ur_review_message'],
+                'comment_meta'=>array(
+                    'bp_ur_review_title'=>$_POST['bp_ur_review_title'],
+                    'bp_ur_review_stars'=>$_POST['bp_ur_review_stars'],
+                
+                ));
+            wp_update_comment($new_comment_arr);
+            //print_r($comment_query->query($args));
+
+        } else if(!empty($_POST['bp_ur_submit_review'])){
+            //print_r('##########2');
     		
     		$id = wp_insert_comment(array(
-    			'comment_content'=>$_POST['bp_ur_review_message'],
     			'comment_type'=>'user_review',
-    			'comment_meta'=>array(
+    		  'comment_content'=>$_POST['bp_ur_review_message'],
+            	'comment_meta'=>array(
     				'bp_ur_review_title'=>$_POST['bp_ur_review_title'],
     				'bp_ur_review_stars'=>$_POST['bp_ur_review_stars'],
     				'bp_ur_reviewed_user_id'=>$reviewed_id
@@ -53,24 +87,43 @@ class BP_User_Review_Init{
     			'user_id'=>$user_id
     		));
     	}else{
-    		$args = array(
-    			'comment_type'=>'user_review',
-    			'user_id'=>$user_id,
-			    'meta_query' => array(
-			        array(
-			            'key' => 'bp_ur_reviewed_user_id',
-			            'value' => $reviewed_id
-			        ),
-			    )
-			 );
-			$comment_query = new WP_Comment_Query( $args );
+    		$args = array('comment__in'=>[$commentID]);	
+            //print_r($args);
+			$comment_query = new WP_Comment_Query;
+            $comments = $comment_query->query($args);
+			if($comments){
+                $content['comment_content'] = $comments[0]->comment_content;
+            } 
+                    
 
-			// if(!empty($comment_query->comments)){
-			// 	foreach($$comment_query->comments as $comment){
-			// 		//fill values To do
-			// 	}
-			// }
-    	}
+
+/*if(!empty($_POST['edit_comment'])){
+            
+             $id = wp_update_comment(array(
+                 'comment_content'=>$_POST['bp_ur_review_message'],
+                 'comment_type'=>'user_review',
+                 'comment_meta'=>array(
+                     'bp_ur_review_title'=>$_POST['bp_ur_review_title'],
+                     'bp_ur_review_stars'=>$_POST['bp_ur_review_stars'],
+                     'bp_ur_reviewed_user_id'=>$reviewed_id
+                 ),
+                 'user_id'=>$user_id
+             ));
+         }else{
+             $args = array('comment__in'=>[$commentID]); 
+             print_r($args);
+             $comment_query = new WP_Comment_Query;
+             $comments = $comment_query->query($args);
+             if($comments){
+                 $content['comment_content'] = $comments[0]->comment_content;
+            }*/
+        
+
+
+
+
+        }
+
     	?>
     	<div class="bp_user_review">
 			<form method="post">
@@ -87,11 +140,18 @@ class BP_User_Review_Init{
 					</div>
 	    		</div>
 	    		<div class="bp_ur_review_message">
-	    			<textarea placeholder="<?php _e('Review Message','bp_ur'); ?>" name="bp_ur_review_message"></textarea>
+	    			<textarea placeholder="<?php _e('Review Message','bp_ur'); ?>" name="bp_ur_review_message"><?php echo $content['comment_content']; ?></textarea>
 	    		</div>
     			<?php wp_nonce_field('security','security'); ?>
     			<input type="submit" value="<?php _e('Post Review','bp_ur'); ?>" name="bp_ur_submit_review" />
+                     
+                      
+
+
+
     		</form>
+
+
     		<style>
 			.bp_ur_stars > label:hover>span:before,
 			.bp_ur_stars > label>input:checked+span:before {
