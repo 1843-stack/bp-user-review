@@ -59,6 +59,16 @@ class BP_User_Review_Profile{
             'screen_function' => array($this,'show_myreviews'), 
             'show_for_displayed_user' => (bp_is_my_profile() || current_user_can('manage_options'))
         ) );
+          bp_core_new_subnav_item( array( 
+            'name' => __('Posted On Me', 'bp-ur' ),
+            'slug' => _x('postedonme','Slug for Profile','bp-ur'),
+            'parent_slug' =>$parent_slug,
+            'parent_url'=>$parent_link,
+            'position' => 40,
+            'screen_function' => array($this,'show_posted'), 
+            'show_for_displayed_user' => (bp_is_my_profile() || current_user_can('manage_options'))
+        ) );
+        
     }
 
     function show_reviews(){
@@ -72,6 +82,11 @@ class BP_User_Review_Profile{
     function show_myreviews(){
         add_action( 'bp_template_title', function(){ _e('My Reviews','bp-ur');} );
         add_action( 'bp_template_content', array($this,'get_mycomments'));
+        bp_core_load_template( 'members/single/plugins');
+    }
+    function show_posted(){
+        add_action( 'bp_template_title', function(){ _e('My Reviews','bp-ur');} );
+        add_action( 'bp_template_content', array($this,'comments'));
         bp_core_load_template( 'members/single/plugins');
     }
 

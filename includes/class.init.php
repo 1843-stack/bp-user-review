@@ -37,7 +37,15 @@ class BP_User_Review_Init{
     	$args = wp_parse_args($atts,$defaults);
     	extract($args);
         //print_r($args);
-    	return $this->user_review_form($reviewee_id,$reviewer_id,$commentid);
+
+      wp_enqueue_script('bp_user_review',plugins_url('../assets/js/bp-user-review.js',__FILE__),array('wp-element'),BP_USER_REVIEW_VERSION,true);
+
+      wp_enqueue_style('bp_user_review_css',plugins_url('../assets/bp-user-review/src/index.css',__FILE__),array(),BP_USER_REVIEW_VERSION);
+
+
+
+      return '<div class="bp_user_review" data-user="'.$reviewer_id.'" data-reviewed="'.$reviewee_id.'"></div>';
+    	//return $this->user_review_form($reviewee_id,$reviewer_id,$commentid);
     }
 
 
@@ -75,6 +83,7 @@ class BP_User_Review_Init{
 
         } else if(!empty($_POST['bp_ur_submit_review'])){
             //print_r('##########2');
+
     		
     		$id = wp_insert_comment(array(
     			'comment_type'=>'user_review',
@@ -86,6 +95,7 @@ class BP_User_Review_Init{
     			),
     			'user_id'=>$user_id
     		));
+        
     	}else{
     		$args = array('comment__in'=>[$commentID]);	
             //print_r($args);
@@ -95,7 +105,7 @@ class BP_User_Review_Init{
                 $content['comment_content'] = $comments[0]->comment_content;
             } 
                     
-
+ 
 
 /*if(!empty($_POST['edit_comment'])){
             
@@ -142,6 +152,8 @@ class BP_User_Review_Init{
 	    		<div class="bp_ur_review_message">
 	    			<textarea placeholder="<?php _e('Review Message','bp_ur'); ?>" name="bp_ur_review_message"><?php echo $content['comment_content']; ?></textarea>
 	    		</div>
+
+                
     			<?php wp_nonce_field('security','security'); ?>
     			<input type="submit" value="<?php _e('Post Review','bp_ur'); ?>" name="bp_ur_submit_review" />
                      
