@@ -15,10 +15,12 @@ Domain Path: /languages/
 */
 
 define( 'BP_USER_REVIEW_VERSION', '1.0' );
+define( 'BP_USER_REVIEW_API_NAMESPACE', 'bpur/v1' );
 
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'includes/class.settings.php' );
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'includes/class.profile.php' );
 require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'includes/class.init.php' );
+require_once( trailingslashit( plugin_dir_path( __FILE__ ) ) . 'includes/class.api.php' );
 
 add_action('plugins_loaded','bp_user_review_translations');
 

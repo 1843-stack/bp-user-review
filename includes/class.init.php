@@ -23,10 +23,14 @@ class BP_User_Review_Init{
     private function __construct(){
     	
     	add_shortcode('bp_user_review',array($this,'user_review'));
+
     }
 
 
     function user_review($atts=array(),$content=null){
+
+     // print_r(rest_url());
+      //http://localhost/wordpress1/wp-json/
 
     	$defaults = array(
     		'reviewee_id'=>get_current_user_id(),
@@ -38,9 +42,20 @@ class BP_User_Review_Init{
     	extract($args);
         //print_r($args);
 
+    
+      echo '<div class="bp_user_review"></div>';
       wp_enqueue_script('bp_user_review',plugins_url('../assets/js/bp-user-review.js',__FILE__),array('wp-element'),BP_USER_REVIEW_VERSION,true);
 
-      wp_enqueue_style('bp_user_review_css',plugins_url('../assets/bp-user-review/src/index.css',__FILE__),array(),BP_USER_REVIEW_VERSION);
+      wp_enqueue_style('bp_user_review_css',plugins_url('../assets/bp-user-review/src/index.css',__FILE__),array('dashicons'),BP_USER_REVIEW_VERSION);
+      wp_localize_script('bp_user_review','bp_user_review',apply_filters('bp_user_review',array(
+      'settings'      => $instance,
+      'api'           => rest_url(BP_USER_REVIEW_API_NAMESPACE),
+      'reviewer_id'   => $reviewer_id,
+      'reviewee_id'   => $reviewee_id,
+    )));
+
+
+
 
 
 
