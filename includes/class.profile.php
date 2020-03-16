@@ -59,7 +59,7 @@ class BP_User_Review_Profile{
             'screen_function' => array($this,'show_myreviews'), 
             'show_for_displayed_user' => (bp_is_my_profile() || current_user_can('manage_options'))
         ) );
-          bp_core_new_subnav_item( array( 
+          /*bp_core_new_subnav_item( array( 
             'name' => __('Posted On Me', 'bp-ur' ),
             'slug' => _x('postedonme','Slug for Profile','bp-ur'),
             'parent_slug' =>$parent_slug,
@@ -67,12 +67,13 @@ class BP_User_Review_Profile{
             'position' => 40,
             'screen_function' => array($this,'show_posted'), 
             'show_for_displayed_user' => (bp_is_my_profile() || current_user_can('manage_options'))
-        ) );
+        ) );*/
         
     }
 
     function show_reviews(){
         //Show mydrive content
+    
         add_action( 'bp_template_title', function(){ _e('Posted Reviews','bp-ur');} );
         add_action( 'bp_template_content', array($this,'get_comment_meta'));
         bp_core_load_template( 'members/single/plugins');
@@ -84,15 +85,48 @@ class BP_User_Review_Profile{
         add_action( 'bp_template_content', array($this,'get_mycomments'));
         bp_core_load_template( 'members/single/plugins');
     }
-    function show_posted(){
+    /*function show_posted(){
         add_action( 'bp_template_title', function(){ _e('My Reviews','bp-ur');} );
         add_action( 'bp_template_content', array($this,'comments'));
         bp_core_load_template( 'members/single/plugins');
-    }
+    }*/
 
 
     function get_comment_meta(){
-       
+            echo '<div class="get_user_review_table"></div>';
+            echo '<script> var event = new CustomEvent("comment_meta_component");
+        setTimeout(function(){
+            document.dispatchEvent(event);
+        },200);
+        </script>';
+
+         wp_enqueue_script('get_user_review_table',plugins_url('../assets/js/bp-get-user-review.js',__FILE__),array('wp-element'),BP_USER_REVIEW_VERSION,true);
+         wp_localize_script('get_user_review_table', 'get_user_review_table', apply_filters('get_user_review_table', array(
+            'settings' => $instance,
+            'api' => rest_url(BP_USER_REVIEW_API_NAMESPACE),
+             'reviewer_id'   => $reviewer_id,
+             'reviewee_id'   => $reviewee_id,
+        )));
+
+      //wp_enqueue_style('bp_user_review_css',plugins_url('../assets/bp-user-review/src/index.css',__FILE__),array('dashicons'),BP_USER_REVIEW_VERSION);
+            /*
+        wp_enqueue_script(
+            'wplms_user_review',
+            plugins_url('../assets/bp-user-review/js/bp-get-user-review.js', __FILE__),
+            array('wp-element'),
+            BP_USER_REVIEW_VERSION,
+            true
+        );
+        // number
+        wp_localize_script('wplms_user_review', 'bp_fetch_user_review', apply_filters('wplms_user_review', array(
+            'settings' => $instance,
+            'api' => rest_url(BP_USER_REVIEW_API_NAMESPACE),
+             'reviewer_id'   => $reviewer_id,
+             'reviewee_id'   => $reviewee_id,
+        )));
+        */
+
+/*
         $comments_query = new WP_Comment_Query;
 
         $paged = isset($_GET['paged'])?$_GET['paged']:1;
@@ -111,6 +145,7 @@ class BP_User_Review_Profile{
                 )
             );?>
 <style>
+
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
@@ -132,6 +167,7 @@ tr:nth-child(even) {
 <?php
 
         $comments = $comments_query->query( $args );
+        
 echo '<table>
 <tr> <th>Name</th>
 <th>Message</th>
@@ -149,6 +185,7 @@ echo '<table>
 
  }
  echo '</table>';
+ 
         }
         
          else {
@@ -164,7 +201,7 @@ echo '<table>
                 }
             }
             echo '</div>';
-        }
+        }*/
 
     }//function closed
 

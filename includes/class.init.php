@@ -79,12 +79,7 @@ class BP_User_Review_Init{
             //print_r($args);
             $comment_query = new WP_Comment_Query;
             $comments = $comment_query->query($args);
-            //echo'<pre>'; 
-            // print_r($comments);
-              
-            // $comment_content = "Test Comment  Content";
-
-           // print_r($comments);
+            
             $new_comment_arr = array(
                 "comment_ID" => $comments[0]->comment_ID,
                 "comment_content" => $_POST['bp_ur_review_message'],
@@ -121,34 +116,13 @@ class BP_User_Review_Init{
             } 
                     
  
-
-/*if(!empty($_POST['edit_comment'])){
-            
-             $id = wp_update_comment(array(
-                 'comment_content'=>$_POST['bp_ur_review_message'],
-                 'comment_type'=>'user_review',
-                 'comment_meta'=>array(
-                     'bp_ur_review_title'=>$_POST['bp_ur_review_title'],
-                     'bp_ur_review_stars'=>$_POST['bp_ur_review_stars'],
-                     'bp_ur_reviewed_user_id'=>$reviewed_id
-                 ),
-                 'user_id'=>$user_id
-             ));
-         }else{
-             $args = array('comment__in'=>[$commentID]); 
-             print_r($args);
-             $comment_query = new WP_Comment_Query;
-             $comments = $comment_query->query($args);
-             if($comments){
-                 $content['comment_content'] = $comments[0]->comment_content;
-            }*/
+}
         
 
 
 
 
-        }
-
+        
     	?>
     	<div class="bp_user_review">
 			<form method="post">
