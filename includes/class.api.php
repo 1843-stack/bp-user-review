@@ -52,6 +52,7 @@ class WPLMS_UserReview_API
 
    function fetch_user_review($request){
         $args = json_decode($request->get_body(),true);
+        // print_r($args);
         $comments_query = new WP_Comment_Query;
         $comments = $comments_query->query( Array(
             'number'=>10,
@@ -63,6 +64,7 @@ class WPLMS_UserReview_API
                     array(
                         'key' => 'bp_ur_reviewed_user_id',
                         'value' => $args['user_id'],
+                        'compare' => '='
                     ),
                 )
            ));
@@ -79,9 +81,17 @@ class WPLMS_UserReview_API
 }
         }
         print_r($comment_meta_stars);*/
-
+        // print_r($comments);
+        $data = array();
       if ($comments) {
-            return new WP_REST_RESPONSE(array('status'=>1,'comment'=>array('title'=>get_comment_meta($comments[0]->comment_ID,'bp_ur_review_title',true),'stars'=>get_comment_meta($comments[0]->comment_ID,'bp_ur_review_stars',true),'review'=>$comments[0]->comment_content,'comment_id'=>$comments[0]->comment_ID)),200);
+        foreach ($comments as $comment) {
+            $commentId = $comment->comment_ID;
+            $data[$commentId]['stars'] = get_comment_meta($commentId,'bp_ur_review_stars',true);
+            $data[$commentId]['msg'] = $comment->comment_content;
+            $data[$commentId]['title'] = get_comment_meta($commentId,'bp_ur_review_title',true);
+        }
+        return new WP_REST_RESPONSE(array('status'=>1,'comment'=>$data),200);
+            // return new WP_REST_RESPONSE(array('status'=>1,'comment'=>array('title'=>get_comment_meta($comments[0]->comment_ID,'bp_ur_review_title',true),'stars'=>get_comment_meta($comments[0]->comment_ID,'bp_ur_review_stars',true),'review'=>$comments[0]->comment_content,'comment_id'=>$comments[0]->comment_ID)),200);
                
         } else {
             return new WP_REST_RESPONSE(array('status'=>1,'comment'=>$comments),200);
@@ -101,7 +111,7 @@ class WPLMS_UserReview_API
                     'bp_ur_review_stars'=>$args['stars'],
                     'bp_ur_reviewed_user_id'=>$args['reviewer_id']
                                     ),
-                'user_id'=>$user_id
+                'user_id'=>$args['reviewee_id']
             ));
         
         }

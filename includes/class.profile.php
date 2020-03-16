@@ -104,8 +104,8 @@ class BP_User_Review_Profile{
          wp_localize_script('get_user_review_table', 'get_user_review_table', apply_filters('get_user_review_table', array(
             'settings' => $instance,
             'api' => rest_url(BP_USER_REVIEW_API_NAMESPACE),
-             'reviewer_id'   => $reviewer_id,
-             'reviewee_id'   => $reviewee_id,
+             'reviewer_id'   => get_current_user_id(),
+             'reviewee_id'   => get_current_user_id(),
         )));
 
       //wp_enqueue_style('bp_user_review_css',plugins_url('../assets/bp-user-review/src/index.css',__FILE__),array('dashicons'),BP_USER_REVIEW_VERSION);

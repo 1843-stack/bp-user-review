@@ -50,8 +50,8 @@ class BP_User_Review_Init{
       wp_localize_script('bp_user_review','bp_user_review',apply_filters('bp_user_review',array(
       'settings'      => $instance,
       'api'           => rest_url(BP_USER_REVIEW_API_NAMESPACE),
-      'reviewer_id'   => $reviewer_id,
-      'reviewee_id'   => $reviewee_id,
+      'reviewer_id'   => get_current_user_id(),
+      'reviewee_id'   => get_current_user_id(),
     )));
 
 
