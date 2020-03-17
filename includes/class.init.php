@@ -46,7 +46,7 @@ class BP_User_Review_Init{
       echo '<div class="bp_user_review"></div>';
       wp_enqueue_script('bp_user_review',plugins_url('../assets/js/bp-user-review.js',__FILE__),array('wp-element'),BP_USER_REVIEW_VERSION,true);
 
-      wp_enqueue_style('bp_user_review_css',plugins_url('../assets/bp-user-review/src/index.css',__FILE__),array('dashicons'),BP_USER_REVIEW_VERSION);
+     // wp_enqueue_style('bp_user_review_css',plugins_url('../assets/bp-user-review/src/index.css',__FILE__),array('dashicons'),BP_USER_REVIEW_VERSION);
       wp_localize_script('bp_user_review','bp_user_review',apply_filters('bp_user_review',array(
       'settings'      => $instance,
       'api'           => rest_url(BP_USER_REVIEW_API_NAMESPACE),

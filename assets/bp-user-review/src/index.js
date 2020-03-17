@@ -16,7 +16,7 @@ const UserReview = (props) =>{
 	const [isSubmitted,setSubmitState] = useState(false);
 	//const submitButton2 = () =>{
 
-	 useEffect(()=>{
+	/* useEffect(()=>{
 	 	console.log(args);
 	 	fetch(`${window.bp_user_review.api}/fetch_user_review/`,{
      	method:'POST',
@@ -30,7 +30,7 @@ const UserReview = (props) =>{
 	 	 });
 	 	
 	
-	});
+	});*/
 //	}
 
  
@@ -45,9 +45,10 @@ const UserReview = (props) =>{
 	 			//console.log("data: ", rreturn.data);
 	 			 setArgs(rreturn.args);
 	 			 console.log(args);     //data recieved
+	 			 setArgs({...args,stars:0})
 	 			 //now we insert data into database
 	 		}
-	 		// setIsLoading(false);
+	 		 //setIsSubmitted(false);
 	 	});
 	 	
 	}

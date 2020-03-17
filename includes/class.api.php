@@ -42,6 +42,13 @@ class WPLMS_UserReview_API
                 'permission_callback'       => array( $this, 'check_permission' ),
             ),
         ));
+        register_rest_route( BP_USER_REVIEW_API_NAMESPACE, '/update_user_review/', array(
+            array(
+                'methods'             =>  'POST',
+                'callback'            =>  array( $this, 'update_user_review' ),
+                'permission_callback'       => array( $this, 'check_permission' ),
+            ),
+        ));
     }
     function check_permission($request) {
     	return true;
@@ -102,7 +109,7 @@ class WPLMS_UserReview_API
     function set_user_review($request) {
           
        $args = json_decode($request->get_body(), true);
-       print_r($args);
+      // print_r($args);
             $id = wp_insert_comment(array(
             'comment_type'=>'user_review',
               'comment_content'=>$args['review'],
@@ -113,6 +120,24 @@ class WPLMS_UserReview_API
                                     ),
                 'user_id'=>$args['reviewee_id']
             ));
+        
+        }
+        function update_user_review($request) {
+          
+                   $args = array('comment__in'=>[$commentID]); 
+            //print_r($args);
+            $comment_query = new WP_Comment_Query;
+            $comments = $comment_query->query($args);
+            
+            $new_comment_arr = array(
+                "comment_ID" => $comments[0]->comment_ID,
+                "comment_content" => $args['bp_ur_review_message'],
+                'comment_meta'=>array(
+                    'bp_ur_review_title'=>$args['title'],
+                    'bp_ur_review_stars'=>$args['stars'],
+                    'bp_ur_reviewed_user_id'=>$args['reviewer_id']
+                
+                ));
         
         }
 

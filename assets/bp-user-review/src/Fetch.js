@@ -1,4 +1,7 @@
 const { createElement, render, useState,useEffect,Fragment} = wp.element;
+//import "./Fetch.css";
+
+
 
 const GetUserReview = (props) =>{
 
@@ -29,28 +32,39 @@ const GetUserReview = (props) =>{
 		 	 	if(rreturn.status){
 		 	 		console.log('return: ',rreturn.comment);
 		 	 		//setArgs({...args,...rreturn.comment});
-		 	 		// setReviews(rreturn.comment);
+		 	 		setReviews(rreturn.comment);
 		 	 		// props.content = rreturn.comment;
-		 	 		// console.log(reviews);
-		 	 		var comment = rreturn.comment;
-		 	 		console.log(comment.log);
-		 	 		// comment.map((item)=>{
-		 	 		// 	console.log(item.title);
-		 	 		// });
+		 	 		//console.log(reviews);
+		 	 	// 	var comment = rreturn.comment;
+		 	 	// Object.keys(comment).map((key, value)=>{console.log(comment[key])});
+
+
+		 	 			 	 	
 		 		}
 		 	 });
 		 }
 	});
 return (
 	<div>
-		<h1>GetUserReview</h1>
-		<table>
+	   		<table>
 			<tr> 
 				<th>Name</th>
 				<th>Message</th>
 				<th>Rating</th>
 				<th>Comment ID</th>
 			</tr>
+				{
+					Object.keys(reviews).map((key, val)=>{
+						return (
+							<tr>
+								<td>{reviews[key].title}</td>
+								<td>{reviews[key].msg}</td>
+								<td>{reviews[key].stars}</td>
+								<td>{key}</td>
+							</tr>
+						)
+					})
+				}
 		</table>
 		</div>
 	);
