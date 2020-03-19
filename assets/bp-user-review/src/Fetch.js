@@ -48,7 +48,7 @@ return (
 	<div>
 	   		<table>
 			<tr> 
-				<th>Name</th>
+				<th>Name:</th>
 				<th>Message</th>
 				<th>Rating</th>
 				<th>Comment ID</th>

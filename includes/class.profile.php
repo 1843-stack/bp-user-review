@@ -209,7 +209,7 @@ echo '<table>
 
     function get_mycomments(){
 
-                       echo '<div class="edit_user_review_table"></div>';
+                       echo '<div class="update_user_review_table"></div>';
                        echo '<script> var event = new CustomEvent("comment_meta_component");
                         setTimeout(function(){
                               document.dispatchEvent(event);
@@ -217,19 +217,21 @@ echo '<table>
                              </script>';
          
       //wp_enqueue_style('get_user_review_table_css',plugins_url('../assets/bp-user-review/src/index.css',__FILE__),array('dashicons'),BP_USER_REVIEW_VERSION);
-         wp_enqueue_script('edit_user_review_table',plugins_url('../assets/js/bp-get-user-review.js',__FILE__),array('wp-element'),BP_USER_REVIEW_VERSION,true);
-         wp_localize_script('edit_user_review_table', 'edit_user_review_table', apply_filters('edit_user_review_table', array(
+         wp_enqueue_script('update_user_review_table',plugins_url('../assets/js/bp-update-user-review.js',__FILE__),array('wp-element'),BP_USER_REVIEW_VERSION,true);
+         wp_localize_script('update_user_review_table', 'update_user_review_table', apply_filters('update_user_review_table', array(
             'settings' => $instance,
             'api' => rest_url(BP_USER_REVIEW_API_NAMESPACE),
              'reviewer_id'   => get_current_user_id(),
              'reviewee_id'   => get_current_user_id(),
+             'update_text'   => __('Update Review','bp-ur'),
+             'id'            => $comment->comment_ID ,
         )));
 
 
 
 
 
-        $comments_query = new WP_Comment_Query;
+    /*  $comments_query = new WP_Comment_Query;
 
         if(isset($_GET['edit_comment'])){
             echo do_shortcode('[bp_user_review commentid='.$_GET['edit_comment'].']');
@@ -265,7 +267,7 @@ echo '<table>
                 }
             }
             echo '</div>';
-        }
+        }*/
     }
  
 

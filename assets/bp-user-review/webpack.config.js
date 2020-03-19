@@ -5,12 +5,12 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   //entry: './src/index.js',
-  entry: './src/Fetch.js',
+  entry: './src/Update.js',
   //entry: './src/projects/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
    // filename: '../../js/bp-user-review.js'
-   filename: '../../js/bp-get-user-review.js'
+   filename: '../../js/bp-update-user-review.js'
   },
   externals: {
     react: {

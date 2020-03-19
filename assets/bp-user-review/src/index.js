@@ -14,24 +14,7 @@ const UserReview = (props) =>{
 
       
 	const [isSubmitted,setSubmitState] = useState(false);
-	//const submitButton2 = () =>{
-
-	/* useEffect(()=>{
-	 	console.log(args);
-	 	fetch(`${window.bp_user_review.api}/fetch_user_review/`,{
-     	method:'POST',
-	 	 	body:JSON.stringify({user_id:window.bp_user_review.reviewer_id})
-             }).then((res)=>res.json())
-	 	.then((rreturn)=>{
-	 	 	if(rreturn.status){
-	 	 		console.log('return: ',rreturn);
-	 	 		setArgs({...args,...return.comment});
-	 		}
-	 	 });
-	 	
 	
-	});*/
-//	}
 
  
 	const submitButton1 = () =>{

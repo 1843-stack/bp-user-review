@@ -124,20 +124,20 @@ class WPLMS_UserReview_API
         }
         function update_user_review($request) {
           
-                   $args = array('comment__in'=>[$commentID]); 
+                  /* $args = array('comment__in'=>[$commentID]); 
             //print_r($args);
             $comment_query = new WP_Comment_Query;
             $comments = $comment_query->query($args);
             
             $new_comment_arr = array(
                 "comment_ID" => $comments[0]->comment_ID,
-                "comment_content" => $args['bp_ur_review_message'],
+                "comment_content" => $args['review'],
                 'comment_meta'=>array(
                     'bp_ur_review_title'=>$args['title'],
                     'bp_ur_review_stars'=>$args['stars'],
                     'bp_ur_reviewed_user_id'=>$args['reviewer_id']
                 
-                ));
+                ));*/
         
         }
 
